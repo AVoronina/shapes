@@ -80,25 +80,24 @@ class Presenter:
     """
     Класс обработки полученного файла
     """
-    def __init__(self, f):
-        self.f: str = f
+    def __init__(self, file):
+        self.file: str = file
 
-    # fixme возможно, нужно иначе возвращать
-    def create_class(self):
-        result = []
-        for line in self.f:
+    def create_shape_list(self):
+        shape_list = ShapeList()
+        for line in self.file:
             if len(line.split()) == 2:
                 mas = line.split(' ')
-                rc = Rectangle(int(mas[0]), int(mas[1]))
-                result.append(rc.get_area())
-                result.append(rc.get_perimeter())
+                shape_list.add_shape(Rectangle(int(mas[0]), int(mas[1])))
             elif len(line.split()) == 3:
                 mas = line.split(' ')
-                tr = Triangle(int(mas[0]), int(mas[1]), int(mas[2]))
-                result.append(tr.get_area())
-                result.append(tr.get_perimeter())
+                shape_list.add_shape(
+                    Triangle(int(mas[0]), int(mas[1]), int(mas[2])))
 
-        return result
+        shape_list.get_total_perimeter()
+        shape_list.get_total_area()
+
+        return shape_list
 
 
 # fixme простой пример использования
