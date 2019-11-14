@@ -82,31 +82,26 @@ class Presenter:
     """
     def __init__(self, file):
         self.file: str = file
+        self.shape_list = None
 
     def create_shape_list(self):
-        shape_list = ShapeList()
+        self.shape_list = ShapeList()
         for line in self.file:
             if len(line.split()) == 2:
                 mas = line.split(' ')
-                shape_list.add_shape(Rectangle(int(mas[0]), int(mas[1])))
+                self.shape_list.add_shape(Rectangle(int(mas[0]), int(mas[1])))
             elif len(line.split()) == 3:
                 mas = line.split(' ')
-                shape_list.add_shape(
+                self.shape_list.add_shape(
                     Triangle(int(mas[0]), int(mas[1]), int(mas[2])))
 
-        shape_list.get_total_perimeter()
-        shape_list.get_total_area()
-
-        return shape_list
-
-
-# fixme простой пример использования
-sh = ShapeList()
-rect1 = Rectangle(2, 3)
-rect2 = Rectangle(2, 3)
-sh.add_shape(rect1)
-sh.add_shape(rect2)
-print(sh.get_total_perimeter())
+    def get_total_results(self):
+        self.create_shape_list()
+        result = {
+            'total_area': self.shape_list.get_total_area(),
+            'total_perimeter': self.shape_list.get_total_perimeter()
+        }
+        return result
 
 
 # class TestStringMethods(unittest.TestCase):
