@@ -1,10 +1,10 @@
+import math
+import unittest
 from typing import List
 from zope.interface import implementer, Interface
 import math
 from tkinter import *
 from tkinter import filedialog as fd
-
-import unittest
 
 
 class IShape(Interface):
@@ -100,60 +100,31 @@ class Presenter:
 
     def get_total_results(self):
         self.create_shape_list()
-        result = {
-            'total_area': self.shape_list.get_total_area(),
-            'total_perimeter': self.shape_list.get_total_perimeter()
-        }
-        return result
 
-def clicked():
-    sh = ShapeList()
-    numbers = num.get()
-    # повтор презентера
-    if len(numbers.split()) == 2:
-        mas = numbers.split(' ')
-        some_class = Rectangle(int(mas[0]), int(mas[1]))
-    elif len(numbers.split()) == 3:
-        mas = numbers.split(' ')
-        some_class = Triangle(int(mas[0]), int(mas[1]), int(mas[2]))
-    sh.add_shape(some_class)
-    try:
-        lb3.configure(text='площадь: %d, периметр: %d' %(sh.get_total_area(), sh.get_total_perimeter()))
-    except ValueError:
-        lb3.configure(text='фигуры не существует!')
+        total_area = self.shape_list.get_total_area()
+        total_perimeter = self.shape_list.get_total_perimeter()
 
-# окно с вводом параметров
-window = Tk()
-window.title("Посчитать площадь и периметр фигур")
-lbmain = Label(window, text="Программа считает площади и периметры треугольников и прямоугольников")
-lbmain.grid(column=0, row=0)
-lbl = Label(window, text="Введите размеры сторон через пробел")
-lbl.grid(column=0, row=1)
-num = Entry(window, width=20)
-num.grid(column=0, row=2)
-btn = Button(window, text="Посчитать", command=clicked)
-btn.grid(column=0, row=3)
-lb2 = Label(window, text="Ответ: ")
-lb2.grid(column=0, row=4)
-lb3 = Label(window, text="")
-lb3.grid(column=0, row=5)
-window.mainloop()
+        return total_area, total_perimeter
 
 
-def insertText():
+def insert_result():
     file_name = fd.askopenfilename()
     presenter = Presenter(open(file_name))
-    print(presenter.get_total_results())
-    # lb3.configure(text=presenter.get_total_results())
+    area, perimeter = presenter.get_total_results()
 
-# окно с выбором файла
-root = Tk()
-text = Text(width=50, height=25)
-text.grid(columnspan=2)
-b1 = Button(text="Открыть", command=insertText)
+    lb.configure(text=f'Общая площадь: {area}\nОбщий периметр: {perimeter}')
+
+
+window = Tk()
+window.title('Посчитать площадь и периметр фигур')
+text = Text(width=40, height=10)
+text.grid(columnspan=1)
+lb = Label(window, text='')
+lb.grid(column=0, row=0)
+b1 = Button(text='Открыть', command=insert_result)
 b1.grid(row=1, sticky=E)
 
-root.mainloop()
+window.mainloop()
 
 # class TestStringMethods(unittest.TestCase):
 #     def test_equal(self):
