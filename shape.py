@@ -1,6 +1,7 @@
 from typing import List
 from zope.interface import implementer, Interface
 import math
+from tkinter import *
 import unittest
 
 
@@ -80,34 +81,67 @@ class Presenter:
     """
     Класс обработки полученного файла
     """
-    def __init__(self, f):
-        self.f: str = f
+    def __init__(self, file):
+        self.file: str = file
+        self.shape_list = None
 
-    # fixme возможно, нужно иначе возвращать
-    def create_class(self):
-        result = []
-        for line in self.f:
+    def create_shape_list(self):
+        self.shape_list = ShapeList()
+        for line in self.file:
             if len(line.split()) == 2:
                 mas = line.split(' ')
-                rc = Rectangle(int(mas[0]), int(mas[1]))
-                result.append(rc.get_area())
-                result.append(rc.get_perimeter())
+                self.shape_list.add_shape(Rectangle(int(mas[0]), int(mas[1])))
             elif len(line.split()) == 3:
                 mas = line.split(' ')
-                tr = Triangle(int(mas[0]), int(mas[1]), int(mas[2]))
-                result.append(tr.get_area())
-                result.append(tr.get_perimeter())
+                self.shape_list.add_shape(
+                    Triangle(int(mas[0]), int(mas[1]), int(mas[2])))
 
+    def get_total_results(self):
+        self.create_shape_list()
+        result = {
+            'total_area': self.shape_list.get_total_area(),
+            'total_perimeter': self.shape_list.get_total_perimeter()
+        }
         return result
 
 
 # fixme простой пример использования
-sh = ShapeList()
-rect1 = Rectangle(2, 3)
-rect2 = Rectangle(2, 3)
-sh.add_shape(rect1)
-sh.add_shape(rect2)
-print(sh.get_total_perimeter())
+# sh = ShapeList()
+# rect1 = Rectangle(2, 3)
+# rect2 = Rectangle(2, 3)
+# sh.add_shape(rect1)
+# sh.add_shape(rect2)
+# print(sh.get_total_perimeter())
+
+def clicked():
+    sh = ShapeList()
+    numbers = num.get()
+    # повтор презентера
+    if len(numbers.split()) == 2:
+        mas = numbers.split(' ')
+        some_class = Rectangle(int(mas[0]), int(mas[1]))
+    elif len(numbers.split()) == 3:
+        mas = numbers.split(' ')
+        some_class = Triangle(int(mas[0]), int(mas[1]), int(mas[2]))
+    sh.add_shape(some_class)
+
+    lb3.configure(text='площадь: %d, периметр: %d' %(sh.get_total_area(), sh.get_total_perimeter()))
+
+window = Tk()
+window.title("Посчитать площадь и периметр фигур")
+lbmain = Label(window, text="Программа считает площади и периметры треугольников и прямоугольников")
+lbmain.grid(column=0, row=0)
+lbl = Label(window, text="Введите размеры сторон через пробел")
+lbl.grid(column=0, row=1)
+num = Entry(window, width=20)
+num.grid(column=0, row=2)
+btn = Button(window, text="Посчитать", command=clicked)
+btn.grid(column=0, row=3)
+lb2 = Label(window, text="Ответ: ")
+lb2.grid(column=0, row=4)
+lb3 = Label(window, text="")
+lb3.grid(column=0, row=5)
+window.mainloop()
 
 
 # class TestStringMethods(unittest.TestCase):
@@ -118,6 +152,7 @@ print(sh.get_total_perimeter())
 #     f = open('text.txt')
 #     all = ShapeList(f)
 #     return all.create_class()
+
 #
 #
 # if __name__ == '__main__':
