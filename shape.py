@@ -2,6 +2,8 @@ from typing import List
 from zope.interface import implementer, Interface
 import math
 from tkinter import *
+from tkinter import filedialog as fd
+
 import unittest
 
 
@@ -120,7 +122,7 @@ def clicked():
     except ValueError:
         lb3.configure(text='фигуры не существует!')
 
-
+# окно с вводом параметров
 window = Tk()
 window.title("Посчитать площадь и периметр фигур")
 lbmain = Label(window, text="Программа считает площади и периметры треугольников и прямоугольников")
@@ -137,6 +139,21 @@ lb3 = Label(window, text="")
 lb3.grid(column=0, row=5)
 window.mainloop()
 
+
+def insertText():
+    file_name = fd.askopenfilename()
+    presenter = Presenter(open(file_name))
+    print(presenter.get_total_results())
+    # lb3.configure(text=presenter.get_total_results())
+
+# окно с выбором файла
+root = Tk()
+text = Text(width=50, height=25)
+text.grid(columnspan=2)
+b1 = Button(text="Открыть", command=insertText)
+b1.grid(row=1, sticky=E)
+
+root.mainloop()
 
 # class TestStringMethods(unittest.TestCase):
 #     def test_equal(self):
