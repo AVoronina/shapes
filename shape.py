@@ -104,15 +104,6 @@ class Presenter:
         }
         return result
 
-
-# fixme простой пример использования
-# sh = ShapeList()
-# rect1 = Rectangle(2, 3)
-# rect2 = Rectangle(2, 3)
-# sh.add_shape(rect1)
-# sh.add_shape(rect2)
-# print(sh.get_total_perimeter())
-
 def clicked():
     sh = ShapeList()
     numbers = num.get()
@@ -124,8 +115,11 @@ def clicked():
         mas = numbers.split(' ')
         some_class = Triangle(int(mas[0]), int(mas[1]), int(mas[2]))
     sh.add_shape(some_class)
+    try:
+        lb3.configure(text='площадь: %d, периметр: %d' %(sh.get_total_area(), sh.get_total_perimeter()))
+    except ValueError:
+        lb3.configure(text='фигуры не существует!')
 
-    lb3.configure(text='площадь: %d, периметр: %d' %(sh.get_total_area(), sh.get_total_perimeter()))
 
 window = Tk()
 window.title("Посчитать площадь и периметр фигур")
@@ -147,11 +141,6 @@ window.mainloop()
 # class TestStringMethods(unittest.TestCase):
 #     def test_equal(self):
 #         self.assertEqual(main_function(), [35, 24, 3, 8, 14.142135623730951, 20])
-
-# def main_function():
-#     f = open('text.txt')
-#     all = ShapeList(f)
-#     return all.create_class()
 
 #
 #
